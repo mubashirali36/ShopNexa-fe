@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
       setUser(data);
     } catch {
       setUser(null);
+      localStorage.removeItem("token");
     } finally {
       setLoading(false);
     }
@@ -24,18 +25,29 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+    }
     setUser(data);
     return data;
   };
 
   const register = async (name, email, password) => {
     const { data } = await api.post("/auth/register", { name, email, password });
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+    }
     setUser(data);
     return data;
   };
 
   const logout = async () => {
-    await api.post("/auth/logout");
+    try {
+      await api.post("/auth/logout");
+    } catch {
+      // ignore logout network errors
+    }
+    localStorage.removeItem("token");
     setUser(null);
   };
 

@@ -153,7 +153,7 @@ const Home = () => {
           <p className="text-gray-500 text-sm">No products yet — check back soon!</p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {featured.link || featured.map((p) => (
+            {featured.map((p) => (
               <ProductCard key={p._id} product={p} />
             ))}
           </div>
@@ -180,5 +180,4 @@ const Home = () => {
   );
 };
 
-Home.jsx
 export default Home;
